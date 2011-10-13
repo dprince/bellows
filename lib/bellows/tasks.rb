@@ -16,6 +16,10 @@ module Bellows
       end
       test = options[:test]
       smoke_tests = Bellows::SmokeStack.get_smoke_tests(project)
+      configs=Util.load_configs
+      test_suite_ids = configs['test_suite_ids'].collect {|x| x.to_s }
+      config_template_ids = configs['config_template_ids'].collect {|x| x.to_s }
+
       Bellows::Gerrit.reviews(project) do |review|
         owner = review['owner']['name']
         refspec = review['currentPatchSet']['ref']
@@ -24,7 +28,7 @@ module Bellows
         desc = owner + ": " +review['subject']
         if not smoke_test
           puts "Creating... " + desc
-          Bellows::SmokeStack.create_smoke_test(project, desc, refspec, [1], [1, 2]) if not test
+          Bellows::SmokeStack.create_smoke_test(project, desc, refspec, config_template_ids, test_suite_ids) if not test
         else
           if smoke_test["#{project}_package_builder"]['branch'] != refspec then
             puts "Updating... " + desc
