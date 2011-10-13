@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require "rubygems"
+require "thor"
+#if not $release
+  #$:.unshift File.dirname(__FILE__) + "/../lib"
+#end
+require "bellows"
+
+Bellows::Tasks.start
