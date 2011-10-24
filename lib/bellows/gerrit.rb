@@ -3,12 +3,12 @@ require 'json'
 module Bellows
   class Gerrit
 
-    def self.reviews(project, status="open")
+    def self.reviews(project, status="open", branch="master")
       reviews = []
       out=%x{ssh review gerrit query "status: #{status}" --current-patch-set --format JSON}
       out.each_line do |line|
         data = JSON.parse(line)
-        if data['project'] and data['project'] == "openstack/#{project}"
+        if data['project'] and data['project'] == "openstack/#{project}" and data['branch'] and data['branch'] == branch
           if block_given?
             yield data
           else

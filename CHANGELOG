@@ -1,0 +1,9 @@
+* Thu Oct 20 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.1
+  - Update gerrit reviews call so it only searches 'master' reviews.
+  - Set status to 'Updated' when a smoke tests is updated on sync.
+  - Explicitly set description on sync/update calls. (Works around UTF-8
+    encoding issue w/ Rails 3 Ruby 1.9 JSON responses).
+  - Rename 'update' task to 'reconfig'.
+
+* Thu Oct 13 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.0
+  - Initial release.

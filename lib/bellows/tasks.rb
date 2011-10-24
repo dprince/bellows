@@ -33,7 +33,7 @@ module Bellows
           if smoke_test["#{project}_package_builder"]['branch'] != refspec then
             puts "Updating... " + desc
             puts "refspec: " + refspec
-            Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {"#{project}_package_builder" => { "branch" => refspec}}) if not test
+            Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {"#{project}_package_builder" => { "branch" => refspec}, "description" => desc, "status" => "Updated"}) if not test
           end
         end
       end
@@ -60,8 +60,8 @@ module Bellows
       end
     end
 
-    desc "update PROJECT", "Update tests suite and configuration selections."
-    def update(project)
+    desc "reconfig PROJECT", "Reconfigure test suite and configuration selections."
+    def reconfig(project)
       if not ['nova', 'glance', 'keystone'].include?(project) then
         puts "ERROR: Please specify a valid project name."
         exit 1
@@ -75,8 +75,9 @@ module Bellows
         refspec = review['currentPatchSet']['ref']
         review_id = Bellows::Util.short_spec(refspec)
         smoke_test = smoke_tests[review_id]
+        desc = review['owner']['name'] + ": " +review['subject']
         if smoke_test
-          Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {"test_suite_ids" => test_suite_ids, "config_template_ids" => config_template_ids})
+          Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {"test_suite_ids" => test_suite_ids, "config_template_ids" => config_template_ids, "description" => desc})
         end
       end
     end
