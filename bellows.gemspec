@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bellows}
-  s.version = "1.0.0"
+  s.version = "1.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Prince"]
-  s.date = %q{2011-10-13}
+  s.date = %q{2011-10-27}
   s.default_executable = %q{bellows}
   s.description = %q{CLI to drive SmokeStack test creation and maintenance based on Gerrit reviews.}
   s.email = %q{dan.prince@rackspace.com}
@@ -20,10 +20,13 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".document",
+    "CHANGELOG",
     "Gemfile",
     "LICENSE.txt",
+    "README.md",
     "Rakefile",
     "VERSION",
+    "bellows.gemspec",
     "bin/bellows",
     "lib/bellows.rb",
     "lib/bellows/gerrit.rb",
@@ -49,17 +52,23 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_development_dependency(%q<thor>, ["~> 0.14.6"])
       s.add_development_dependency(%q<json>, ["~> 1.4.6"])
+      s.add_runtime_dependency(%q<json>, [">= 0"])
+      s.add_runtime_dependency(%q<thor>, [">= 0"])
     else
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_dependency(%q<thor>, ["~> 0.14.6"])
       s.add_dependency(%q<json>, ["~> 1.4.6"])
+      s.add_dependency(%q<json>, [">= 0"])
+      s.add_dependency(%q<thor>, [">= 0"])
     end
   else
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
     s.add_dependency(%q<thor>, ["~> 0.14.6"])
     s.add_dependency(%q<json>, ["~> 1.4.6"])
+    s.add_dependency(%q<json>, [">= 0"])
+    s.add_dependency(%q<thor>, [">= 0"])
   end
 end
 

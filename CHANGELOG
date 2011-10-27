@@ -1,3 +1,6 @@
+* Thu Oct 27 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.2
+  - Update purge task so it purges both 'merged' and 'abandoned' branches.
+
 * Thu Oct 20 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.1
   - Update gerrit reviews call so it only searches 'master' reviews.
   - Set status to 'Updated' when a smoke tests is updated on sync.

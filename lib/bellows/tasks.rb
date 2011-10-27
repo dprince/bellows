@@ -48,7 +48,9 @@ module Bellows
       end
       test = options[:test]
       smoke_tests = Bellows::SmokeStack.get_smoke_tests(project)
-      Bellows::Gerrit.reviews(project, "merged") do |review|
+      reviews = Bellows::Gerrit.reviews(project, "merged")
+      reviews += Bellows::Gerrit.reviews(project, "abandoned") 
+      reviews.each do |review|
         refspec = review['currentPatchSet']['ref']
         review_id = Bellows::Util.short_spec(refspec)
         smoke_test = smoke_tests[review_id]

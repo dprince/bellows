@@ -23,6 +23,8 @@ Jeweler::Tasks.new do |gem|
   gem.email = "dan.prince@rackspace.com"
   gem.authors = ["Dan Prince"]
   # dependencies defined in Gemfile
+  gem.add_dependency 'json'
+  gem.add_dependency 'thor'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
