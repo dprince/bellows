@@ -1,5 +1,4 @@
 require 'yaml'
-require 'socket'
 
 module Bellows
   module Util
@@ -21,7 +20,7 @@ module Bellows
     end
 
     if File.exists?(config_file) then
-      configs=YAML.load_file(config_file)
+      configs = YAML.load_file(config_file) || {}
       raise_if_nil_or_empty(configs, "smokestack_url")
       raise_if_nil_or_empty(configs, "smokestack_username")
       raise_if_nil_or_empty(configs, "smokestack_password")

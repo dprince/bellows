@@ -61,9 +61,9 @@ module Bellows
           post_data.store("#{base_name}[branch]", refspec)
           post_data.store("#{base_name}[merge_trunk]", "1")
         else
+          post_data.store("#{base_name}[merge_trunk]", "0")
           post_data.store("#{base_name}[url]", "git://github.com/openstack/#{proj}.git")
           post_data.store("#{base_name}[branch]", "master")
-          post_data.store("#{base_name}[merge_trunk]", "0")
         end
       end
 

@@ -1,3 +1,6 @@
+* Thu Oct 27 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.3
+  - Handle empty config files gracefully.
+
 * Thu Oct 27 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.2
   - Update purge task so it purges both 'merged' and 'abandoned' branches.
 
