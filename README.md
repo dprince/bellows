@@ -37,7 +37,6 @@ Available bellows tasks:
 	  bellows help [TASK]     # Describe available tasks or one specific task
 	  bellows purge PROJECT   # Purge merged reviews from SmokeStack
 	  bellows sync PROJECT    # Create tests & update refspecs for active reviews.
-	  bellows update PROJECT  # Update tests suite and configuration selections.
 
 Run bellows sync to create smokestack test configurations and update refspecs for active reviews:
 
@@ -47,9 +46,9 @@ Purge 'merged' reviews from SmokeStack:
 
 	bellows purge nova
 
-Update the selected configuration template and test suite choices for active reviews in SmokeStack (based on the selections in your .bellows.conf file):
+Sync test suite choices for active reviews in SmokeStack (based on the selections in your .bellows.conf file):
 
-	bellows update nova
+	bellows sync nova --all
 
 All commands support creating and maintaining test configs for nova, glance, and keystone.
 

@@ -1,3 +1,7 @@
+* Thu Nov 17 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.4
+  - Explicitly set config templates and tests on sync.
+  - All --all option to sync command. Remove 'reconfig' task.
+
 * Thu Oct 27 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.3
   - Handle empty config files gracefully.
 
