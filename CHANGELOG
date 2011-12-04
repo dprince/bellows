@@ -1,3 +1,7 @@
+* Thu Dec 3 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.5
+  - Add 'fire' task to run jobs for reviews without results.
+  - Add --quiet option to all tasks.
+
 * Thu Nov 17 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.4
   - Explicitly set config templates and tests on sync.
   - All --all option to sync command. Remove 'reconfig' task.

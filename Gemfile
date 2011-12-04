@@ -10,4 +10,5 @@ group :development do
   gem "jeweler", "~> 1.6.4"
   gem "thor", "~> 0.14.6"
   gem "json", "~> 1.4.6"
+  gem "mocha", "~> 0.9.9"
 end

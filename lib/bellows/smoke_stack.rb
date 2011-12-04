@@ -5,16 +5,20 @@ require 'bellows/util'
 module Bellows
   class SmokeStack
 
-    def self.get_smoke_tests(project)
-      smoke_tests = {}
+    def self.jobs()
+      JSON.parse(Bellows::HTTP.get("/jobs.json?limit=10000"))
+    end
+
+    def self.smoke_tests(project)
+      tests = {}
       data = JSON.parse(Bellows::HTTP.get("/smoke_tests.json"))
       data.each do |item|
         branch = item['smoke_test']["#{project}_package_builder"]['branch']
         if branch and not branch.empty? then
-          smoke_tests.store(Bellows::Util.short_spec(branch), item['smoke_test'])
+          tests.store(Bellows::Util.short_spec(branch), item['smoke_test'])
         end
       end
-      smoke_tests
+      tests
     end
 
     def self.format_request(smoke_test)
@@ -36,7 +40,7 @@ module Bellows
     end
 
     def self.update_smoke_test(id, updates={})
-  
+
       data = JSON.parse(Bellows::HTTP.get("/smoke_tests/#{id}.json"))
       ['nova', 'glance', 'keystone'].each do |proj|
         if updates["#{proj}_package_builder"]

@@ -43,5 +43,13 @@ module Bellows
       refspec.sub(/\/[^\/]*$/, "")
     end
 
+    VALID_PROJECTS = ['nova', 'glance', 'keystone']
+    def self.validate_project(project)
+      if not VALID_PROJECTS.include?(project) then
+        puts "ERROR: Please specify a valid project name."
+        exit 1
+      end
+    end
+
   end
 end
