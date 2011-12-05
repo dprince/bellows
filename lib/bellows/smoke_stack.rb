@@ -6,7 +6,7 @@ module Bellows
   class SmokeStack
 
     def self.jobs()
-      JSON.parse(Bellows::HTTP.get("/jobs.json?limit=10000"))
+      JSON.parse(Bellows::HTTP.get("/jobs.json?limit=99999"))
     end
 
     def self.smoke_tests(project)

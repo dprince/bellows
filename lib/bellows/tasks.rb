@@ -79,7 +79,7 @@ module Bellows
           if data
               revision = data["#{project}_revision"]
               if revision and not revision.empty?
-                  jobs.add(revision)
+                  jobs.add(revision[0,7])
               end
           end
       end

@@ -9,7 +9,7 @@ module Bellows
 
     def self.reviews(project, status="open", branch="master")
       reviews = []
-      out=Gerrit.run_cmd(%{query "status: #{status}" --current-patch-set --format JSON})
+      out=Gerrit.run_cmd(%{query status:#{status} project:openstack/#{project} branch:#{branch} limit:500 --current-patch-set --format JSON})
       out.each_line do |line|
         data = JSON.parse(line)
         if data['project'] and data['project'] == "openstack/#{project}" and data['branch'] and data['branch'] == branch

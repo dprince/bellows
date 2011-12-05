@@ -1,4 +1,7 @@
-* Thu Dec 3 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.5
+* Sun Dec 4 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.6
+  - Truncate revisions for job git hashes.
+
+* Sat Dec 3 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.5
   - Add 'fire' task to run jobs for reviews without results.
   - Add --quiet option to all tasks.
 
