@@ -9,6 +9,31 @@ module Bellows
       JSON.parse(Bellows::HTTP.get("/jobs.json?limit=99999"))
     end
 
+    def self.jobs_with_hash(git_hash, jobs=nil)
+      if jobs.nil?
+        jobs = JSON.parse(Bellows::HTTP.get("/jobs.json?limit=99999"))
+      end
+      jobs_found = []
+      jobs.each do |job|
+        data = job.values[0]
+        ['nova','keystone','glance'].each do |project|
+          revision = data["#{project}_revision"]
+          if revision and revision == git_hash then
+            jobs_found << job 
+          end
+        end
+      end
+      jobs_found
+    end
+
+    #Return a reference to the first job of the specified type.
+    def self.job_data_for_type(jobs, job_type)
+      jobs.each do |job|
+        return job.values[0] if job.keys[0] == job_type
+      end
+      nil
+    end
+
     def self.smoke_tests(project)
       tests = {}
       data = JSON.parse(Bellows::HTTP.get("/smoke_tests.json"))

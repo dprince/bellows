@@ -1,3 +1,6 @@
+* Mon Dec 12 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.7
+  - Add 'comment' task to comment on Gerrit reviews w/ test result links.
+
 * Sun Dec 4 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.6
   - Truncate revisions for job git hashes.
 

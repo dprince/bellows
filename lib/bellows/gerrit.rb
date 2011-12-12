@@ -23,5 +23,9 @@ module Bellows
       reviews
     end
 
+    def self.comment(revision, message)
+      Gerrit.run_cmd(%{review --code-review 0 -m \"'#{message}'\" #{revision}})
+    end
+
   end
 end

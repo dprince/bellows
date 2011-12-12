@@ -72,7 +72,6 @@ module Bellows
       Util.validate_project(project)
       test = options[:test]
       limit = options[:limit] || 5
-      # jobs indexed by revision
       jobs = Set.new
       Bellows::SmokeStack.jobs.each do |job|
           data = job.values[0]
@@ -102,6 +101,58 @@ module Bellows
           end
           if count >= limit.to_i then
             break
+          end
+        end
+      end
+    end
+
+    desc "comment PROJECT", "Add gerrit comments for reviews w/ results."
+    method_options :test => :boolean
+    method_options :quiet => :boolean
+    method_options :cache_file => :string, :required => true
+    def comment(project, options=(options or {}))
+      Util.validate_project(project)
+      test = options[:test]
+      cache_file = options[:cache_file]
+      jobs = Bellows::SmokeStack.jobs
+
+      if cache_file.nil? or cache_file.empty?
+        puts "ERROR: cache_file is required."
+        exit 1
+      end
+
+      cached_hashes = Set.new
+      if File.exists?(cache_file) then
+        IO.read(cache_file).each_line do |line|
+          cached_hashes << line.chomp
+        end
+      end
+
+      File.open(cache_file, 'a') do |file|
+        Bellows::Gerrit.reviews(project) do |review|
+          revision = review['currentPatchSet']['revision'][0,7]
+          desc = review['owner']['name'] + ": " +review['subject']
+          if not cached_hashes.include? revision
+            refspec = review['currentPatchSet']['ref']
+            patchset_num = review['currentPatchSet']['number']
+            jobs_for_rev = Bellows::SmokeStack.jobs_with_hash(revision, jobs)
+            if jobs_for_rev.count > 0 then
+              unit=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, 'job_unit_tester')
+              libvirt=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, 'job_vpc')
+              xenserver=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, 'job_xen_hybrid')
+              if unit and libvirt and xenserver then
+                puts "Commenting ... " + desc if not options[:quiet]
+                message = "SmokeStack Results (patch set #{patchset_num}):\n"
+                message += "\tUnit #{unit['status']}: http://smokestack.openstack.org/?go=/jobs/#{unit['id']}\n"
+                message += "\tLibvirt #{libvirt['status']}: http://smokestack.openstack.org/?go=/jobs/#{libvirt['id']}\n"
+                message += "\tXenServer #{xenserver['status']}: http://smokestack.openstack.org/?go=/jobs/#{xenserver['id']}"
+                out = Bellows::Gerrit.comment(review['currentPatchSet']['revision'], message) if not test
+                puts out if not options[:quiet]
+                file.write revision + "\n" if not test
+              end
+
+            end
+
           end
         end
       end
