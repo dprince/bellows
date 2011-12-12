@@ -141,8 +141,6 @@ module Bellows
               libvirt=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, 'job_vpc')
               xenserver=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, 'job_xen_hybrid')
               if unit and libvirt and xenserver then
-puts unit.inspect
-
                 puts "Commenting ... " + desc if not options[:quiet]
                 message = "SmokeStack Results (patch set #{patchset_num}):\n"
                 message += "\tUnit #{unit['status']}:#{unit['msg']} http://smokestack.openstack.org/?go=/jobs/#{unit['id']}\n"
