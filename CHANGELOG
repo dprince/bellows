@@ -1,3 +1,8 @@
+* Fri Dec 23 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.9
+  - Update the 'comment' task so that only an approved set of results generates
+    a gerrit comment. Successful result sets are automatically approved.
+  - Remove debug statement in commit task.
+
 * Mon Dec 12 2011 Dan Prince <dan.prince@rackspace.com> - 1.0.8
   - Update 'comment' task to display msg for test failures.
 

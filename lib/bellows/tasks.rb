@@ -140,7 +140,7 @@ module Bellows
               unit=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, 'job_unit_tester')
               libvirt=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, 'job_vpc')
               xenserver=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, 'job_xen_hybrid')
-              if unit and libvirt and xenserver then
+              if Bellows::SmokeStack.approved?([unit, libvirt, xenserver]) then
                 puts "Commenting ... " + desc if not options[:quiet]
                 message = "SmokeStack Results (patch set #{patchset_num}):\n"
                 message += "\tUnit #{unit['status']}:#{unit['msg']} http://smokestack.openstack.org/?go=/jobs/#{unit['id']}\n"
@@ -148,7 +148,7 @@ module Bellows
                 message += "\tXenServer #{xenserver['status']}:#{xenserver['msg']} http://smokestack.openstack.org/?go=/jobs/#{xenserver['id']}"
 puts message
                 out = Bellows::Gerrit.comment(review['currentPatchSet']['revision'], message) if not test
-                puts out if not options[:quiet]
+                puts out if not options[:quiet] and not test
                 file.write revision + "\n" if not test
               end
 

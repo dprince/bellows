@@ -108,5 +108,16 @@ module Bellows
 
     end
 
+    #returns true if jobs all passed (green) or all failed results are approved
+    def self.approved?(job_datas)
+      approved = true
+      job_datas.each do |data|
+        if data.nil? or data['status'] == 'Failed' and data['approved_by'].nil?
+          approved = false
+        end
+      end
+      approved
+    end
+
   end
 end
