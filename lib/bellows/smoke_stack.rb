@@ -112,7 +112,7 @@ module Bellows
     def self.approved?(job_datas)
       approved = true
       job_datas.each do |data|
-        if data.nil? or data['status'] == 'Failed' and data['approved_by'].nil?
+        if data.nil? or (data['status'] == 'Failed' and data['approved_by'].nil?)
           approved = false
         end
       end
