@@ -34,6 +34,16 @@ module Bellows
       nil
     end
 
+    DEFAULT_JOB_TYPES=[{'name' => 'job_unit_tester', 'auto_approved' => false, 'description' => 'Unit'}]
+    def self.job_types()
+      configs=Util.load_configs
+      job_type_list = configs['job_types']
+      if job_type_list.nil? or job_type_list.empty? then
+        job_type_list = DEFAULT_JOB_TYPES
+      end
+      job_type_list
+    end
+
     def self.smoke_tests(project)
       tests = {}
       data = JSON.parse(Bellows::HTTP.get("/smoke_tests.json"))
@@ -109,10 +119,10 @@ module Bellows
     end
 
     #returns true if jobs all passed (green) or all failed results are approved
-    def self.approved?(job_datas)
+    def self.complete?(job_datas)
       approved = true
-      job_datas.each do |data|
-        if data.nil? or (data['status'] == 'Failed' and data['approved_by'].nil?)
+      job_datas.each_pair do |job_type, job_data|
+        if job_data.nil? or (job_data['status'] == 'Failed' and (job_data['approved_by'].nil? and not job_type['auto_approved']))
           approved = false
         end
       end

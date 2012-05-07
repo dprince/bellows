@@ -25,6 +25,19 @@ Installation
 
 	test_suite_ids:
 	- 1
+
+	job_types:
+	    - name: job_unit_tester
+	      auto_approved: Yes
+	      description: "Unit"
+
+	    - name: job_unit_tester
+	      auto_approved: No
+	      description: "Unit"
+
+	    - name: job_unit_tester
+	      auto_approved: No
+	      description: "Unit"
 	EOF_CAT
 
 

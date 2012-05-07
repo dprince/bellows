@@ -137,16 +137,22 @@ module Bellows
             patchset_num = review['currentPatchSet']['number']
             jobs_for_rev = Bellows::SmokeStack.jobs_with_hash(revision, jobs)
             if jobs_for_rev.count > 0 then
-              unit=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, 'job_unit_tester')
-              libvirt=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, 'job_vpc')
-              xenserver=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, 'job_xen_hybrid')
-              if Bellows::SmokeStack.approved?([unit, libvirt, xenserver]) then
+
+              job_types = Bellows::SmokeStack.job_types
+              job_datas = {}
+              job_types.each do |job_type|
+                job_data=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, job_type['name'])
+                job_datas.store(job_type, job_data)
+              end
+
+              if Bellows::SmokeStack.complete?(job_datas) then
                 puts "Commenting ... " + desc if not options[:quiet]
                 message = "SmokeStack Results (patch set #{patchset_num}):\n"
-                message += "\tUnit #{unit['status']}:#{unit['msg']} http://smokestack.openstack.org/?go=/jobs/#{unit['id']}\n"
-                message += "\tLibvirt #{libvirt['status']}:#{libvirt['msg']} http://smokestack.openstack.org/?go=/jobs/#{libvirt['id']}\n"
-                message += "\tXenServer #{xenserver['status']}:#{xenserver['msg']} http://smokestack.openstack.org/?go=/jobs/#{xenserver['id']}"
-puts message
+
+                job_datas.each_pair do |job_type, job_data|
+                    message += "\t#{job_type['name']} #{job_data['status']}:#{job_data['msg']} http://smokestack.openstack.org/?go=/jobs/#{job_data['id']}\n"
+                end
+                puts message if not options[:quiet] and not test
                 out = Bellows::Gerrit.comment(review['currentPatchSet']['revision'], message) if not test
                 puts out if not options[:quiet] and not test
                 file.write revision + "\n" if not test

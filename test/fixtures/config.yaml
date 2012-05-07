@@ -1,0 +1,23 @@
+smokestack_url: http://localhost:3000
+smokestack_username: admin
+smokestack_password: cloud
+
+config_template_ids:
+- 1
+- 2
+
+test_suite_ids:
+- 1
+
+job_types:
+    - name: job_unit_tester
+      auto_approved: true
+      description: "Unit"
+
+    - name: job_puppet_vpc
+      auto_approved: false
+      description: "Libvirt (Fedora 16)"
+
+    - name: job_chef_vpc_xen
+      auto_approved: false
+      description: "XenServer (Ubuntu 11.10)"

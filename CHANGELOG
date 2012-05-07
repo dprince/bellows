@@ -1,5 +1,8 @@
 * Mon May 7 2012 Dan Prince <dprince@redhat.com> - 
   - Add 'projects' config option. Defaults to ['nova', 'keystone', 'glance']
+  - Add 'job_types' config option. The comment task now makes use of
+    configurable job_types when determining when results are present
+    and approved.
 
 * Mon Jan 9 2012 Dan Prince <dan.prince@rackspace.com> - 1.0.10
   - Fix 'undefined method `[]' for nil:NilClass' error that could occur in
