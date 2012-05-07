@@ -16,7 +16,7 @@ module Bellows
       jobs_found = []
       jobs.each do |job|
         data = job.values[0]
-        ['nova','keystone','glance'].each do |project|
+        Util.projects.each do |project|
           revision = data["#{project}_revision"]
           if revision and revision == git_hash then
             jobs_found << job 
@@ -67,7 +67,7 @@ module Bellows
     def self.update_smoke_test(id, updates={})
 
       data = JSON.parse(Bellows::HTTP.get("/smoke_tests/#{id}.json"))
-      ['nova', 'glance', 'keystone'].each do |proj|
+      Util.projects.each do |proj|
         if updates["#{proj}_package_builder"]
           data["smoke_test"]["#{proj}_package_builder"].merge!(updates["#{proj}_package_builder"])
           updates.delete("#{proj}_package_builder")
@@ -83,7 +83,7 @@ module Bellows
 
       post_data = { "smoke_test[description]" => description }
 
-      ['nova', 'glance', 'keystone'].each do |proj|
+      Util.projects.each do |proj|
         base_name="smoke_test[#{proj}_package_builder_attributes]"
         if project == proj then
           post_data.store("#{base_name}[url]", "https://review.openstack.org/p/openstack/#{project}")

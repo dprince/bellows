@@ -1,3 +1,6 @@
+* Mon May 7 2012 Dan Prince <dprince@redhat.com> - 
+  - Add 'projects' config option. Defaults to ['nova', 'keystone', 'glance']
+
 * Mon Jan 9 2012 Dan Prince <dan.prince@rackspace.com> - 1.0.10
   - Fix 'undefined method `[]' for nil:NilClass' error that could occur in
     the approved? method of smoke_stack.rb. This error was keeping bellows

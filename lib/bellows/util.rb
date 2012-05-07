@@ -3,33 +3,34 @@ require 'yaml'
 module Bellows
   module Util
 
+    DEFAULT_PROJECTS = ['nova', 'glance', 'keystone']
     @@configs=nil
 
     def self.load_configs
 
-    return @@configs if not @@configs.nil?
+      return @@configs if not @@configs.nil?
 
-    config_file=ENV['BELLOWS_CONFIG_FILE']
-    if config_file.nil? then
+      config_file=ENV['BELLOWS_CONFIG_FILE']
+      if config_file.nil? then
 
-      config_file=ENV['HOME']+File::SEPARATOR+".bellows.conf"
-      if not File.exists?(config_file) then
-        config_file="/etc/bellows.conf"
+        config_file=ENV['HOME']+File::SEPARATOR+".bellows.conf"
+        if not File.exists?(config_file) then
+          config_file="/etc/bellows.conf"
+        end
+
       end
 
-    end
+      if File.exists?(config_file) then
+        configs = YAML.load_file(config_file) || {}
+        raise_if_nil_or_empty(configs, "smokestack_url")
+        raise_if_nil_or_empty(configs, "smokestack_username")
+        raise_if_nil_or_empty(configs, "smokestack_password")
+        @@configs=configs
+      else
+        raise "Failed to load bellows config file. Please configure /etc/bellows.conf or create a .bellows.conf config file in your HOME directory."
+      end
 
-    if File.exists?(config_file) then
-      configs = YAML.load_file(config_file) || {}
-      raise_if_nil_or_empty(configs, "smokestack_url")
-      raise_if_nil_or_empty(configs, "smokestack_username")
-      raise_if_nil_or_empty(configs, "smokestack_password")
-      @@configs=configs
-    else
-      raise "Failed to load bellows config file. Please configure /etc/bellows.conf or create a .bellows.conf config file in your HOME directory."
-    end
-
-    @@configs
+      @@configs
 
     end
 
@@ -43,12 +44,25 @@ module Bellows
       refspec.sub(/\/[^\/]*$/, "")
     end
 
-    VALID_PROJECTS = ['nova', 'glance', 'keystone']
     def self.validate_project(project)
-      if not VALID_PROJECTS.include?(project) then
+      configs=self.load_configs
+      projects = configs['projects']
+      if projects.nil? or projects.empty? then
+        projects = DEFAULT_PROJECTS
+      end
+      if not projects.include?(project) then
         puts "ERROR: Please specify a valid project name."
         exit 1
       end
+    end
+
+    def self.projects
+      configs=self.load_configs
+      proj_list = configs['projects']
+      if proj_list.nil? or proj_list.empty? then
+        proj_list = DEFAULT_PROJECTS
+      end
+      return proj_list
     end
 
   end
