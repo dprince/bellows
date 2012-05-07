@@ -1,4 +1,6 @@
 * Mon May 7 2012 Dan Prince <dprince@redhat.com> - 
+  - The comment task now uses Gerrit 'verified' to report results.
+    It votes with -1 and +1 based on SmokeStack results.
   - Add 'projects' config option. Defaults to ['nova', 'keystone', 'glance']
   - Add 'job_types' config option. The comment task now makes use of
     configurable job_types when determining when results are present

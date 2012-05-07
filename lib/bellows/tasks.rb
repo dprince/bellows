@@ -148,12 +148,13 @@ module Bellows
               if Bellows::SmokeStack.complete?(job_datas) then
                 puts "Commenting ... " + desc if not options[:quiet]
                 message = "SmokeStack Results (patch set #{patchset_num}):\n"
-
+                verify_vote = 1
                 job_datas.each_pair do |job_type, job_data|
                     message += "\t#{job_type['name']} #{job_data['status']}:#{job_data['msg']} http://smokestack.openstack.org/?go=/jobs/#{job_data['id']}\n"
+                    verify_vote = -1 if job_data['status'] == 'Failed'
                 end
                 puts message if not options[:quiet] and not test
-                out = Bellows::Gerrit.comment(review['currentPatchSet']['revision'], message) if not test
+                out = Bellows::Gerrit.comment(review['currentPatchSet']['revision'], message, verify_vote) if not test
                 puts out if not options[:quiet] and not test
                 file.write revision + "\n" if not test
               end
