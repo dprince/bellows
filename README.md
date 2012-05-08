@@ -31,13 +31,13 @@ Installation
 	      auto_approved: Yes
 	      description: "Unit"
 
-	    - name: job_unit_tester
+	    - name: job_puppet_vpc
 	      auto_approved: No
-	      description: "Unit"
+	      description: "Libvirt (Fedora 16)"
 
-	    - name: job_unit_tester
+	    - name: job_chef_vpc_xen
 	      auto_approved: No
-	      description: "Unit"
+	      description: "XenServer (Ubuntu 11.10)"
 	EOF_CAT
 
 

@@ -20,4 +20,4 @@ job_types:
 
     - name: job_chef_vpc_xen
       auto_approved: false
-      description: "XenServer (Ubuntu 11.10)"
+      description: "XenServer 5.6 SP2"
