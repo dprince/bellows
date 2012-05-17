@@ -24,6 +24,9 @@ class TaskTest < Test::Unit::TestCase
 
   def test_comment
 
+    sample_config = fixture('config.yaml')
+    Bellows::Util.stubs(:load_configs).returns(YAML::load(sample_config))
+
     jobs_data = fixture('jobs.json')
     Bellows::SmokeStack.stubs(:jobs).returns(JSON.parse(jobs_data))
     

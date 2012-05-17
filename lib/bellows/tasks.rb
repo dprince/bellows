@@ -139,17 +139,19 @@ module Bellows
             if jobs_for_rev.count > 0 then
 
               job_types = Bellows::SmokeStack.job_types
-              job_datas = {}
+              job_datas = []
               job_types.each do |job_type|
                 job_data=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, job_type['name'])
-                job_datas.store(job_type, job_data)
+                job_datas << [job_type, job_data]
               end
 
               if Bellows::SmokeStack.complete?(job_datas) then
                 puts "Commenting ... " + desc if not options[:quiet]
                 message = "SmokeStack Results (patch set #{patchset_num}):\n"
                 verify_vote = 1
-                job_datas.each_pair do |job_type, job_data|
+                job_datas.each do |arr|
+                    job_type = arr[0]
+                    job_data = arr[1]
                     message += "\t#{job_type['description']} #{job_data['status']}:#{job_data['msg']} http://smokestack.openstack.org/?go=/jobs/#{job_data['id']}\n"
                     verify_vote = -1 if job_data['status'] == 'Failed'
                 end
@@ -158,7 +160,7 @@ module Bellows
                 puts out if not options[:quiet] and not test
                 file.write revision + "\n" if not test
               end
-
+              
             end
 
           end
