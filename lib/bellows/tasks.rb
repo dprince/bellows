@@ -56,7 +56,13 @@ module Bellows
         refspec = review['currentPatchSet']['ref']
         review_id = Bellows::Util.short_spec(refspec)
         smoke_test = smoke_tests[review_id]
-        desc = review['owner']['name'] + ": " +review['subject']
+        desc = ""
+        if review['owner']['name'] then
+          desc = review['owner']['name']
+        end
+        if review['subject'] then
+          desc += ": " +review['subject']
+        end
         if smoke_test
           puts "Deleting... " + desc if not options[:quiet]
           Bellows::HTTP.delete("/smoke_tests/#{smoke_test['id']}") if not test
