@@ -1,3 +1,13 @@
+* Fri July 27 2012 Dan Prince <dprince@redhat.com> - 1.1.0
+  - Add new Gerrit stream task to stream gerrit events and sync/fire
+    SmokeStack tests.    
+  - Add support for per project test suite configurations.
+  - Optimize GET requests to SmokeStack for smoke_tests.
+  - Tasks now default to using the project list from the config file
+    if no project is specified. If a single project is specified then
+    the task will only operate on the specified project.
+  - Handle missing Gerrit owners in purge task.
+
 * Mon May 17 2012 Dan Prince <dprince@redhat.com> - 1.0.12
   - Ordering fix to ensure job types are displayed in Gerrit comments 
     in the same order they are listed in the config file.
