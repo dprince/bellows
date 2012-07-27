@@ -8,6 +8,11 @@ module Bellows
       return %x{ssh review gerrit #{command}}
     end
 
+    #defined here so we can easily stub out for testing
+    def self.stream_events_cmd
+      return "ssh review gerrit stream-events"
+    end
+
     def self.reviews(project, status="open", branch="master")
       reviews = []
       out=Gerrit.run_cmd(%{query status:#{status} project:openstack/#{project} branch:#{branch} limit:500 --current-patch-set --format JSON})
@@ -30,11 +35,15 @@ module Bellows
 
     def self.stream_events(type=nil)
 
-      PTY.spawn "ssh review gerrit stream-events" do |read, write, pid|
+      PTY.spawn stream_events_cmd do |read, write, pid|
         loop do
-          data = JSON.parse(read.gets)
-          if type.nil? or data['type'] == type then
-            yield data
+          begin
+            data = JSON.parse(read.gets)
+            if type.nil? or data['type'] == type then
+              yield data
+            end
+          rescue
+            break
           end
         end
       end

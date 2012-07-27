@@ -203,18 +203,26 @@ module Bellows
           smoke_test = smoke_tests[review_id]
           desc = owner + ": " +patchset['change']['subject']
           test_suite_ids, config_template_ids = Util.test_configs(project)
+
+          smoke_test_id = nil
           if not smoke_test
+            # create new smoke test
             puts "Creating... " + desc
-            Bellows::SmokeStack.create_smoke_test(project, desc, refspec, config_template_ids, test_suite_ids) if not test
+            smoke_test_id = Bellows::SmokeStack.create_smoke_test(project, desc, refspec, config_template_ids, test_suite_ids) if not test
           else
+            # update existing smoke test
             puts "Updating... " + desc if not options[:quiet]
             puts "refspec: " + refspec if not options[:quiet]
             Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {"#{project}_package_builder" => { "branch" => refspec}, "description" => desc, "status" => "Updated", "test_suite_ids" => test_suite_ids, "config_template_ids" => config_template_ids}) if not test
+            smoke_test_id = smoke_test['id']
 
-            if not test and fire then
-              Bellows::HTTP.post("/smoke_tests/#{smoke_test['id']}/run_jobs", {})
-            end
           end
+
+          # fire off tests
+          if not test and fire then
+            Bellows::HTTP.post("/smoke_tests/#{smoke_test_id}/run_jobs", {})
+          end
+
         end # reviews
       end # stream_events
     end

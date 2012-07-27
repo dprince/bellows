@@ -91,6 +91,7 @@ module Bellows
 
     end
 
+    # returns the ID of the created SmokeTest 
     def self.create_smoke_test(project, description, refspec, config_template_ids, test_suite_ids)
 
       post_data = { "smoke_test[description]" => description }
@@ -116,7 +117,8 @@ module Bellows
       test_suite_ids.each {|id| test_suites << id.to_s}
       post_data.store("smoke_test[test_suite_ids][]", test_suites)
 
-      Bellows::HTTP.post("/smoke_tests", post_data)
+      # Return the ID of the created smoke test
+      Bellows::HTTP.post("/smoke_tests", post_data).sub(/^.*\//, '')
 
     end
 

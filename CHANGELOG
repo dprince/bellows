@@ -1,3 +1,8 @@
+* Fri July 27 2012 Dan Prince <dprince@redhat.com> - 1.1.1
+  - Fix issue where new tests weren't fired via stream task.
+  - Include swift in default project list.
+  - Add test for stream task.
+
 * Fri July 27 2012 Dan Prince <dprince@redhat.com> - 1.1.0
   - Add new Gerrit stream task to stream gerrit events and sync/fire
     SmokeStack tests.    
