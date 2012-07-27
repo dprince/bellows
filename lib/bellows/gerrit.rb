@@ -1,4 +1,5 @@
 require 'json'
+require 'pty'
 
 module Bellows
   class Gerrit
@@ -25,6 +26,19 @@ module Bellows
 
     def self.comment(revision, message, verify_vote=0)
       Gerrit.run_cmd(%{review --verified #{verify_vote} -m \"'#{message}'\" #{revision}})
+    end
+
+    def self.stream_events(type=nil)
+
+      PTY.spawn "ssh review gerrit stream-events" do |read, write, pid|
+        loop do
+          data = JSON.parse(read.gets)
+          if type.nil? or data['type'] == type then
+            yield data
+          end
+        end
+      end
+
     end
 
   end

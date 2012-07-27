@@ -184,5 +184,42 @@ module Bellows
       end # file
     end
 
+    desc "stream", "Stream Gerrit events and sync data to SmokeStack."
+    method_options :test => :boolean
+    method_options :fire => :boolean
+    method_options :quiet => :boolean
+    def stream(options=(options or {}))
+      test = options[:test]
+      fire = options[:fire]
+      configs=Util.load_configs
+      test_suite_ids = configs['test_suite_ids'].collect {|x| x.to_s }
+      config_template_ids = configs['config_template_ids'].collect {|x| x.to_s }
+      projects = Util.projects
+
+      Bellows::Gerrit.stream_events('patchset-created') do |patchset|
+        project = patchset['change']['project'].sub(/.*\//, '')
+        if projects.include?(project) then
+          owner = patchset['change']['owner']['name']
+          refspec = patchset['patchSet']['ref']
+          review_id = Bellows::Util.short_spec(refspec)
+          smoke_tests = Bellows::SmokeStack.smoke_tests(projects)
+          smoke_test = smoke_tests[review_id]
+          desc = owner + ": " +patchset['change']['subject']
+          if not smoke_test
+            puts "Creating... " + desc
+            Bellows::SmokeStack.create_smoke_test(project, desc, refspec, config_template_ids, test_suite_ids) if not test
+          else
+            puts "Updating... " + desc if not options[:quiet]
+            puts "refspec: " + refspec if not options[:quiet]
+            Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {"#{project}_package_builder" => { "branch" => refspec}, "description" => desc, "status" => "Updated", "test_suite_ids" => test_suite_ids, "config_template_ids" => config_template_ids}) if not test
+
+            if not test and fire then
+              Bellows::HTTP.post("/smoke_tests/#{smoke_test['id']}/run_jobs", {})
+            end
+          end
+        end # reviews
+      end # stream_events
+    end
+
   end
 end
