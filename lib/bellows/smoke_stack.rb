@@ -44,13 +44,15 @@ module Bellows
       job_type_list
     end
 
-    def self.smoke_tests(project)
+    def self.smoke_tests(projects)
       tests = {}
       data = JSON.parse(Bellows::HTTP.get("/smoke_tests.json"))
       data.each do |item|
-        branch = item['smoke_test']["#{project}_package_builder"]['branch']
-        if branch and not branch.empty? then
-          tests.store(Bellows::Util.short_spec(branch), item['smoke_test'])
+        projects.each do |project|
+          branch = item['smoke_test']["#{project}_package_builder"]['branch']
+          if branch and not branch.empty? then
+            tests.store(Bellows::Util.short_spec(branch), item['smoke_test'])
+          end
         end
       end
       tests

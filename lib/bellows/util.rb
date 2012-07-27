@@ -56,7 +56,14 @@ module Bellows
       end
     end
 
-    def self.projects
+    # If a single project is provided return an array of that.
+    # Otherwise return the default projects from the config file or the default
+    # project list.
+    def self.projects(project=nil)
+      if not project.nil?
+        validate_project(project)
+        return [project]
+      end
       configs=self.load_configs
       proj_list = configs['projects']
       if proj_list.nil? or proj_list.empty? then
