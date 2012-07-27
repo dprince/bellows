@@ -18,8 +18,6 @@ module Bellows
       all = options[:all]
       smoke_tests = Bellows::SmokeStack.smoke_tests(projects)
       configs=Util.load_configs
-      test_suite_ids = configs['test_suite_ids'].collect {|x| x.to_s }
-      config_template_ids = configs['config_template_ids'].collect {|x| x.to_s }
 
       projects.each do |project|
         Bellows::Gerrit.reviews(project) do |review|
@@ -28,6 +26,7 @@ module Bellows
           review_id = Bellows::Util.short_spec(refspec)
           smoke_test = smoke_tests[review_id]
           desc = owner + ": " +review['subject']
+          test_suite_ids, config_template_ids = Util.test_configs(project)
           if not smoke_test
             puts "Creating... " + desc
             Bellows::SmokeStack.create_smoke_test(project, desc, refspec, config_template_ids, test_suite_ids) if not test
@@ -192,8 +191,6 @@ module Bellows
       test = options[:test]
       fire = options[:fire]
       configs=Util.load_configs
-      test_suite_ids = configs['test_suite_ids'].collect {|x| x.to_s }
-      config_template_ids = configs['config_template_ids'].collect {|x| x.to_s }
       projects = Util.projects
 
       Bellows::Gerrit.stream_events('patchset-created') do |patchset|
@@ -205,6 +202,7 @@ module Bellows
           smoke_tests = Bellows::SmokeStack.smoke_tests(projects)
           smoke_test = smoke_tests[review_id]
           desc = owner + ": " +patchset['change']['subject']
+          test_suite_ids, config_template_ids = Util.test_configs(project)
           if not smoke_test
             puts "Creating... " + desc
             Bellows::SmokeStack.create_smoke_test(project, desc, refspec, config_template_ids, test_suite_ids) if not test

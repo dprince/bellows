@@ -72,5 +72,21 @@ module Bellows
       return proj_list
     end
 
+    def self.test_configs(project=nil)
+      configs=load_configs
+      test_suite_ids = nil
+      config_template_ids = nil
+      # per project configs may be specified in the config file
+      if not project.nil? and configs[project] then
+        test_suite_ids = configs[project]['test_suite_ids'].collect {|x| x.to_s }
+        config_template_ids = configs[project]['config_template_ids'].collect {|x| x.to_s }
+      else
+        # if no configs specified use the configured defaults
+        test_suite_ids = configs['test_suite_ids'].collect {|x| x.to_s }
+        config_template_ids = configs['config_template_ids'].collect {|x| x.to_s }
+      end
+      return test_suite_ids, config_template_ids
+    end
+
   end
 end
