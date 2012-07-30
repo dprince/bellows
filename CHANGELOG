@@ -1,3 +1,6 @@
+* Sun July 29 2012 Dan Prince <dprince@redhat.com> - 1.1.2
+  - Add --branch option to stream task.
+
 * Fri July 27 2012 Dan Prince <dprince@redhat.com> - 1.1.1
   - Fix issue where new tests weren't fired via stream task.
   - Include swift in default project list.

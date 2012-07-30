@@ -187,15 +187,18 @@ module Bellows
     method_options :test => :boolean
     method_options :fire => :boolean
     method_options :quiet => :boolean
+    method_options :branch => :string, :default => "master"
     def stream(options=(options or {}))
       test = options[:test]
       fire = options[:fire]
+      branch = options[:branch] || "master"
       configs=Util.load_configs
       projects = Util.projects
 
       Bellows::Gerrit.stream_events('patchset-created') do |patchset|
         project = patchset['change']['project'].sub(/.*\//, '')
-        if projects.include?(project) then
+        patch_branch = patchset['change']['branch']
+        if projects.include?(project) and patch_branch == branch then
           owner = patchset['change']['owner']['name']
           refspec = patchset['patchSet']['ref']
           review_id = Bellows::Util.short_spec(refspec)
