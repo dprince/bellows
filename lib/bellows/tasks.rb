@@ -152,7 +152,7 @@ module Bellows
               jobs_for_rev = Bellows::SmokeStack.jobs_with_hash(revision, jobs)
               if jobs_for_rev.count > 0 then
   
-                job_types = Bellows::SmokeStack.job_types
+                job_types = Bellows::SmokeStack.job_types(project)
                 job_datas = []
                 job_types.each do |job_type|
                   job_data=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, job_type['name'])

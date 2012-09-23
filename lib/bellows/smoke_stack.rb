@@ -35,13 +35,25 @@ module Bellows
     end
 
     DEFAULT_JOB_TYPES=[{'name' => 'job_unit_tester', 'auto_approved' => false, 'description' => 'Unit'}]
-    def self.job_types()
+    def self.job_types(project=nil)
       configs=Util.load_configs
-      job_type_list = configs['job_types']
+
+      job_type_list = nil
+
+      if not project.nil? and configs[project] then
+        if configs[project]['job_types']
+          job_type_list = configs[project]['job_types']
+        end
+      else
+        job_type_list = configs['job_types']
+      end
+
       if job_type_list.nil? or job_type_list.empty? then
         job_type_list = DEFAULT_JOB_TYPES
       end
+
       job_type_list
+
     end
 
     def self.smoke_tests(projects)

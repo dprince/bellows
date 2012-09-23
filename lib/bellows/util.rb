@@ -78,11 +78,19 @@ module Bellows
       config_template_ids = nil
       # per project configs may be specified in the config file
       if not project.nil? and configs[project] then
-        test_suite_ids = configs[project]['test_suite_ids'].collect {|x| x.to_s }
-        config_template_ids = configs[project]['config_template_ids'].collect {|x| x.to_s }
-      else
-        # if no configs specified use the configured defaults
+        if configs[project]['test_suite_ids'] then
+          test_suite_ids = configs[project]['test_suite_ids'].collect {|x| x.to_s }
+        end
+        if configs[project]['config_template_ids'] then
+          config_template_ids = configs[project]['config_template_ids'].collect {|x| x.to_s }
+        end
+      end
+    
+      # if no configs specified use the configured defaults
+      if test_suite_ids.nil? then
         test_suite_ids = configs['test_suite_ids'].collect {|x| x.to_s }
+      end
+      if config_template_ids.nil? then
         config_template_ids = configs['config_template_ids'].collect {|x| x.to_s }
       end
       return test_suite_ids, config_template_ids
