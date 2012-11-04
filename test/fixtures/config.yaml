@@ -9,15 +9,17 @@ config_template_ids:
 test_suite_ids:
 - 1
 
-job_types:
+comment_configs:
     - name: job_unit_tester
       auto_approved: true
       description: "Unit"
 
     - name: job_puppet_vpc
+      config_template_id: 1
       auto_approved: false
       description: "Libvirt (Fedora 16)"
 
     - name: job_chef_vpc_xen
+      config_template_id: 2
       auto_approved: false
       description: "XenServer 5.6 SP2"

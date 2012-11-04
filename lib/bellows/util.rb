@@ -3,7 +3,7 @@ require 'yaml'
 module Bellows
   module Util
 
-    DEFAULT_PROJECTS = ['nova', 'glance', 'keystone', 'swift']
+    DEFAULT_PROJECTS = ['nova', 'glance', 'keystone', 'swift', 'cinder', 'quantum']
     @@configs=nil
 
     def self.load_configs

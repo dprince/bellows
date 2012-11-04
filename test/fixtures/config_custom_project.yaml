@@ -18,15 +18,17 @@ glance:
     - 2
 
 nova:
-  job_types:
+  comment_configs:
     - name: job_unit_tester
       auto_approved: true
       description: "Unit"
 
     - name: job_puppet_vpc
+      config_template_id: 3
       auto_approved: false
       description: "Libvirt (Fedora 16)"
 
     - name: job_chef_vpc_xen
+      config_template_id: 4
       auto_approved: false
       description: "XenServer 5.6 SP2"

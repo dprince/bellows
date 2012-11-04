@@ -128,6 +128,7 @@ module Bellows
       test = options[:test]
       cache_file = options[:cache_file]
       jobs = Bellows::SmokeStack.jobs
+      configs=Util.load_configs
 
       if cache_file.nil? or cache_file.empty?
         puts "ERROR: cache_file is required."
@@ -152,11 +153,11 @@ module Bellows
               jobs_for_rev = Bellows::SmokeStack.jobs_with_hash(revision, jobs)
               if jobs_for_rev.count > 0 then
   
-                job_types = Bellows::SmokeStack.job_types(project)
+                comment_configs = Bellows::SmokeStack.comment_configs(project)
                 job_datas = []
-                job_types.each do |job_type|
-                  job_data=Bellows::SmokeStack.job_data_for_type(jobs_for_rev, job_type['name'])
-                  job_datas << [job_type, job_data]
+                comment_configs.each do |comment_config|
+                  job_data=Bellows::SmokeStack.job_data_for_comments(jobs_for_rev, comment_config)
+                  job_datas << [comment_config, job_data]
                 end
   
                 if Bellows::SmokeStack.complete?(job_datas) then
@@ -164,9 +165,9 @@ module Bellows
                   message = "SmokeStack Results (patch set #{patchset_num}):\n"
                   verify_vote = 1
                   job_datas.each do |arr|
-                      job_type = arr[0]
+                      comment_config = arr[0]
                       job_data = arr[1]
-                      message += "\t#{job_type['description']} #{job_data['status']}:#{job_data['msg']} http://smokestack.openstack.org/?go=/jobs/#{job_data['id']}\n"
+                      message += "\t#{comment_config['description']} #{job_data['status']}:#{job_data['msg']} #{configs['smokestack_url']}/?go=/jobs/#{job_data['id']}\n"
                       verify_vote = -1 if job_data['status'] == 'Failed'
                   end
                   puts message if not options[:quiet]

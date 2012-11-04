@@ -26,33 +26,42 @@ module Bellows
       jobs_found
     end
 
-    #Return a reference to the first job of the specified type.
-    def self.job_data_for_type(jobs, job_type)
+    # Return a reference to the first job matching the criteria for
+    # the specified comment config
+    def self.job_data_for_comments(jobs, comment_config)
       jobs.each do |job|
-        return job.values[0] if job.keys[0] == job_type
+        if job.keys[0] == comment_config['name']
+          job_values = job.values[0]
+          if comment_config['config_template_id'].nil? and job.keys[0] == 'job_unit_tester' then
+            # will be nil for unit tests (which don't use a config template)
+            return job_values
+          elsif comment_config['config_template_id'] and job_values['config_template_id'] == comment_config['config_template_id'] then
+            return job_values
+          end
+        end
       end
       nil
     end
 
-    DEFAULT_JOB_TYPES=[{'name' => 'job_unit_tester', 'auto_approved' => false, 'description' => 'Unit'}]
-    def self.job_types(project=nil)
+    DEFAULT_COMMENT_CONFIGS=[{'name' => 'job_unit_tester', 'auto_approved' => false, 'description' => 'Unit'}]
+    def self.comment_configs(project=nil)
       configs=Util.load_configs
 
-      job_type_list = nil
+      comment_config_list = nil
 
       if not project.nil? and configs[project] then
-        if configs[project]['job_types']
-          job_type_list = configs[project]['job_types']
+        if configs[project]['comment_configs']
+          comment_config_list = configs[project]['comment_configs']
         end
       else
-        job_type_list = configs['job_types']
+        comment_config_list = configs['comment_configs']
       end
 
-      if job_type_list.nil? or job_type_list.empty? then
-        job_type_list = DEFAULT_JOB_TYPES
+      if comment_config_list.nil? or comment_config_list.empty? then
+        comment_config_list = DEFAULT_COMMENT_CONFIGS
       end
 
-      job_type_list
+      comment_config_list
 
     end
 

@@ -26,18 +26,20 @@ Installation
 	test_suite_ids:
 	- 1
 
-	job_types:
+	comment_configs:
 	    - name: job_unit_tester
 	      auto_approved: Yes
 	      description: "Unit"
 
-	    - name: job_puppet_vpc
+	    - name: job_puppet_libvirt
+	      config_template_id: 1
 	      auto_approved: No
-	      description: "Libvirt (Fedora 16)"
+	      description: "Fedora 17 Libvirt Quantum w/ OpenvSwitch"
 
-	    - name: job_chef_vpc_xen
+	    - name: job_puppet_xen
+	      config_template_id: 2
 	      auto_approved: No
-	      description: "XenServer (Ubuntu 11.10)"
+	      description: "Fedora 17 Nova w/ XenServer"
 	EOF_CAT
 
 
@@ -47,10 +49,12 @@ Examples
 Available bellows tasks:
 
 	Tasks:
-	  bellows fire PROJECT   # Run jobs for reviews without results.
-	  bellows help [TASK]     # Describe available tasks or one specific task
-	  bellows purge PROJECT   # Purge merged reviews from SmokeStack
-	  bellows sync PROJECT    # Create tests & update refspecs for active reviews.
+	  bellows comment PROJECT  # Add gerrit comments for reviews w/ results.
+	  bellows fire PROJECT     # Run jobs for reviews without results.
+	  bellows help [TASK]      # Describe available tasks or one specific task
+	  bellows purge PROJECT    # Purge merged reviews from SmokeStack
+	  bellows stream           # Stream Gerrit events and sync data to SmokeStack.
+	  bellows sync PROJECT     # Create tests & update refspecs for active reviews.
 
 Run bellows sync to create smokestack test configurations and update refspecs for active reviews:
 
@@ -72,4 +76,4 @@ All commands support creating and maintaining test configs for nova, glance, and
 
 License
 -------
-Copyright (c) 2011 Dan Prince. See LICENSE.txt for further details.
+Copyright (c) 2011-2012 Dan Prince. Copyright 2012 Red Hat Inc. See LICENSE.txt for further details.

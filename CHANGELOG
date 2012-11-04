@@ -1,3 +1,9 @@
+* Sat Nov 3 2012 Dan Prince <dprince@redhat.com> - 1.2.0
+  - Rename 'job_types' to 'comment_configs' in the config file.
+  - Add 'config_template_id' to 'comment_configs' sections. This
+    supports the ability to report comments when the same runner
+    is used w/ multiple SmokeStack configurations.
+
 * Sun Sep 23 2012 Dan Prince <dprince@redhat.com> - 1.1.3
   - Add support for per project job types in the config file.
 
