@@ -40,16 +40,16 @@ class SmokeStackTest < Test::Unit::TestCase
     assert_equal 1, Bellows::SmokeStack.comment_configs.size
 
     # there should only be 1 set for the glance project
-    assert_equal 1, Bellows::SmokeStack.comment_configs("glance").size
+    assert_equal 1, Bellows::SmokeStack.comment_configs("openstack/glance").size
 
     # the nova project should have custom job types defined
-    unit_tester_type = Bellows::SmokeStack.comment_configs("nova")[0]
+    unit_tester_type = Bellows::SmokeStack.comment_configs("openstack/nova")[0]
     assert_equal 'job_unit_tester', unit_tester_type['name']
     assert_equal 'Unit', unit_tester_type['description']
     assert_nil unit_tester_type['config_template_id']
     assert_equal true, unit_tester_type['auto_approved']
 
-    puppet_vpc_type = Bellows::SmokeStack.comment_configs("nova")[1]
+    puppet_vpc_type = Bellows::SmokeStack.comment_configs("openstack/nova")[1]
     assert_equal 'job_puppet_vpc', puppet_vpc_type['name']
     assert_equal 3, puppet_vpc_type['config_template_id']
     assert_equal 'Libvirt (Fedora 16)', puppet_vpc_type['description']

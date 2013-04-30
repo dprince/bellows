@@ -3,7 +3,12 @@ require 'yaml'
 module Bellows
   module Util
 
-    DEFAULT_PROJECTS = ['nova', 'glance', 'keystone', 'swift', 'cinder', 'quantum']
+    CORE_PROJECTS = ['openstack/nova', 'openstack/glance', 'openstack/keystone', 'openstack/swift', 'openstack/cinder', 'openstack/quantum']
+
+    PUPPET_PROJECTS = ['stackforge/puppet-nova', 'stackforge/puppet-glance', 'stackforge/puppet-keystone', 'stackforge/puppet-swift', 'stackforge/puppet-cinder', 'stackforge/puppet-quantum']
+
+    ALL_PROJECTS = CORE_PROJECTS + PUPPET_PROJECTS
+
     @@configs=nil
 
     def self.load_configs
@@ -48,7 +53,7 @@ module Bellows
       configs=self.load_configs
       projects = configs['projects']
       if projects.nil? or projects.empty? then
-        projects = DEFAULT_PROJECTS
+        projects = CORE_PROJECTS + PUPPET_PROJECTS
       end
       if not projects.include?(project) then
         puts "ERROR: Please specify a valid project name."
@@ -67,7 +72,7 @@ module Bellows
       configs=self.load_configs
       proj_list = configs['projects']
       if proj_list.nil? or proj_list.empty? then
-        proj_list = DEFAULT_PROJECTS
+        proj_list = CORE_PROJECTS + PUPPET_PROJECTS
       end
       return proj_list
     end

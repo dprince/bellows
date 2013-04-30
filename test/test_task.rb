@@ -18,7 +18,7 @@ class TaskTest < Test::Unit::TestCase
     response = mock()
     Bellows::HTTP.stubs(:post).returns(response)
     tasks = Bellows::Tasks.new
-    tasks.fire('nova', options={:quiet => true})
+    tasks.fire('openstack/nova', options={:quiet => true})
 
   end
 
@@ -39,7 +39,7 @@ class TaskTest < Test::Unit::TestCase
     Bellows::HTTP.stubs(:post).returns(response)
     tasks = Bellows::Tasks.new
 
-    tasks.comment('nova', options={:quiet => true, :cache_file => cache_file.path})
+    tasks.comment('openstack/nova', options={:quiet => true, :cache_file => cache_file.path})
 
   end
 

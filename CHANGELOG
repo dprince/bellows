@@ -1,3 +1,10 @@
+* Mon Apr 29 2013 Dan Prince <dprince@redhat.com> - 2.0.0
+  - Add support for stackforge puppet modules.
+
+    This changes breaks compat with the old config file format
+    in that all projects must now be prefixed with their org.
+    Examples: openstack/nova, stackforge/puppet-nova, etc.
+
 * Sat Nov 3 2012 Dan Prince <dprince@redhat.com> - 1.2.0
   - Rename 'job_types' to 'comment_configs' in the config file.
   - Add 'config_template_id' to 'comment_configs' sections. This

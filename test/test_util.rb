@@ -21,7 +21,7 @@ class UtilTest < Test::Unit::TestCase
     assert_equal "2", test_suite_ids[0]
 
     # ensure default configs are used for project that doesn't specify them
-    test_suite_ids, config_template_ids = Bellows::Util.test_configs("nova")
+    test_suite_ids, config_template_ids = Bellows::Util.test_configs("openstack/nova")
 
     assert_equal "1", config_template_ids[0]
     assert_equal "2", config_template_ids[1]

@@ -31,13 +31,13 @@ module Bellows
             puts "Creating... " + desc
             Bellows::SmokeStack.create_smoke_test(project, desc, refspec, config_template_ids, test_suite_ids) if not test
           else
-            if smoke_test["#{project}_package_builder"]['branch'] != refspec then
+            if smoke_test[Bellows::SmokeStack::OBJECT_NAMES[project]]['branch'] != refspec then
               puts "Updating... " + desc if not options[:quiet]
               puts "refspec: " + refspec if not options[:quiet]
-              Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {"#{project}_package_builder" => { "branch" => refspec}, "description" => desc, "status" => "Updated", "test_suite_ids" => test_suite_ids, "config_template_ids" => config_template_ids}) if not test
+              Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {Bellows::SmokeStack::OBJECT_NAMES[project] => { "branch" => refspec}, "description" => desc, "status" => "Updated", "test_suite_ids" => test_suite_ids, "config_template_ids" => config_template_ids}) if not test
             elsif all then
               puts "Updating (all)... " + desc if not options[:quiet]
-              Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {"#{project}_package_builder" => { "branch" => refspec}, "description" => desc, "test_suite_ids" => test_suite_ids, "config_template_ids" => config_template_ids}) if not test
+              Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {Bellows::SmokeStack::OBJECT_NAMES[project] => { "branch" => refspec}, "description" => desc, "test_suite_ids" => test_suite_ids, "config_template_ids" => config_template_ids}) if not test
             end
           end
         end # reviews
@@ -86,7 +86,7 @@ module Bellows
           projects.each do |project|
             data = job.values[0]
             if data
-                revision = data["#{project}_revision"]
+                revision = data[Bellows::SmokeStack::PROJ_REVISIONS[project]]
                 if revision and not revision.empty?
                     jobs.add(revision[0,7])
                 end
@@ -197,7 +197,7 @@ module Bellows
       projects = Util.projects
 
       Bellows::Gerrit.stream_events('patchset-created') do |patchset|
-        project = patchset['change']['project'].sub(/.*\//, '')
+        project = patchset['change']['project']
         patch_branch = patchset['change']['branch']
         if projects.include?(project) and patch_branch == branch then
           owner = patchset['change']['owner']['name']
@@ -217,7 +217,7 @@ module Bellows
             # update existing smoke test
             puts "Updating... " + desc if not options[:quiet]
             puts "refspec: " + refspec if not options[:quiet]
-            Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {"#{project}_package_builder" => { "branch" => refspec}, "description" => desc, "status" => "Updated", "test_suite_ids" => test_suite_ids, "config_template_ids" => config_template_ids}) if not test
+            Bellows::SmokeStack.update_smoke_test(smoke_test['id'], {Bellows::SmokeStack::OBJECT_NAMES[project] => { "branch" => refspec}, "description" => desc, "status" => "Updated", "test_suite_ids" => test_suite_ids, "config_template_ids" => config_template_ids}) if not test
             smoke_test_id = smoke_test['id']
 
           end

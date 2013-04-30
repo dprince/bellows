@@ -21,7 +21,6 @@ Installation
 
 	config_template_ids:
 	- 1
-	- 2
 
 	test_suite_ids:
 	- 1
@@ -58,22 +57,20 @@ Available bellows tasks:
 
 Run bellows sync to create smokestack test configurations and update refspecs for active reviews:
 
-	bellows sync nova
+	bellows sync openstack/nova
 
 Purge 'merged' reviews from SmokeStack:
 
-	bellows purge nova
+	bellows purge openstack/nova
 
 Sync test suite choices for active reviews in SmokeStack (based on the selections in your .bellows.conf file):
 
-	bellows sync nova --all
+	bellows sync openstack/nova --all
 
 Fire tests for reviews without results (3 at a time):
 
-	bellows fire nova --limit=3
-
-All commands support creating and maintaining test configs for nova, glance, and keystone.
+	bellows fire openstack/nova --limit=3
 
 License
 -------
-Copyright (c) 2011-2012 Dan Prince. Copyright 2012 Red Hat Inc. See LICENSE.txt for further details.
+Copyright (c) 2011-2013 Dan Prince. Copyright 2012 Red Hat Inc. See LICENSE.txt for further details.

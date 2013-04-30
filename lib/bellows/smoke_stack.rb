@@ -5,6 +5,51 @@ require 'bellows/util'
 module Bellows
   class SmokeStack
 
+    PROJ_REVISIONS = {
+      'openstack/nova' => 'nova_revision',
+      'openstack/glance' => 'glance_revision',
+      'openstack/keystone' => 'keystone_revision',
+      'openstack/swift' => 'swift_revision',
+      'openstack/cinder' => 'cinder_revision',
+      'openstack/quantum' => 'quantum_revision',
+      'stackforge/puppet-nova' => 'nova_conf_module_revision',
+      'stackforge/puppet-glance' => 'glance_conf_module_revision',
+      'stackforge/puppet-keystone' => 'keystone_conf_module_revision',
+      'stackforge/puppet-swift' => 'swift_conf_module_revision',
+      'stackforge/puppet-cinder' => 'cinder_conf_module_revision',
+      'stackforge/puppet-quantum' => 'quantum_conf_module_revision',
+    }
+
+    OBJECT_NAMES = {
+      'openstack/nova' => 'nova_package_builder',
+      'openstack/glance' => 'glance_package_builder',
+      'openstack/keystone' => 'keystone_package_builder',
+      'openstack/swift' => 'swift_package_builder',
+      'openstack/cinder' => 'cinder_package_builder',
+      'openstack/quantum' => 'quantum_package_builder',
+      'stackforge/puppet-nova' => 'nova_config_module',
+      'stackforge/puppet-glance' => 'glance_config_module',
+      'stackforge/puppet-keystone' => 'keystone_config_module',
+      'stackforge/puppet-swift' => 'swift_config_module',
+      'stackforge/puppet-cinder' => 'cinder_config_module',
+      'stackforge/puppet-quantum' => 'quantum_config_module',
+    }
+
+    ATTRIBUTE_NAMES = {
+      'openstack/nova' => 'nova_package_builder_attributes',
+      'openstack/glance' => 'glance_package_builder_attributes',
+      'openstack/keystone' => 'keystone_package_builder_attributes',
+      'openstack/swift' => 'swift_package_builder_attributes',
+      'openstack/cinder' => 'cinder_package_builder_attributes',
+      'openstack/quantum' => 'quantum_package_builder_attributes',
+      'stackforge/puppet-nova' => 'nova_config_module_attributes',
+      'stackforge/puppet-glance' => 'glance_config_module_attributes',
+      'stackforge/puppet-keystone' => 'keystone_config_module_attributes',
+      'stackforge/puppet-swift' => 'swift_config_module_attributes',
+      'stackforge/puppet-cinder' => 'cinder_config_module_attributes',
+      'stackforge/puppet-quantum' => 'quantum_config_module_attributes',
+    }
+
     def self.jobs()
       JSON.parse(Bellows::HTTP.get("/jobs.json?limit=99999"))
     end
@@ -17,7 +62,7 @@ module Bellows
       jobs.each do |job|
         data = job.values[0]
         Util.projects.each do |project|
-          revision = data["#{project}_revision"]
+          revision = data[PROJ_REVISIONS[project]]
           if revision and revision == git_hash then
             jobs_found << job 
           end
@@ -70,7 +115,8 @@ module Bellows
       data = JSON.parse(Bellows::HTTP.get("/smoke_tests.json"))
       data.each do |item|
         projects.each do |project|
-          branch = item['smoke_test']["#{project}_package_builder"]['branch']
+          # core projects use this
+          branch = item['smoke_test'][OBJECT_NAMES[project]]['branch']
           if branch and not branch.empty? then
             tests.store(Bellows::Util.short_spec(branch), item['smoke_test'])
           end
@@ -101,9 +147,9 @@ module Bellows
 
       data = JSON.parse(Bellows::HTTP.get("/smoke_tests/#{id}.json"))
       Util.projects.each do |proj|
-        if updates["#{proj}_package_builder"]
-          data["smoke_test"]["#{proj}_package_builder"].merge!(updates["#{proj}_package_builder"])
-          updates.delete("#{proj}_package_builder")
+        if updates[OBJECT_NAMES[proj]]
+          data["smoke_test"][OBJECT_NAMES[proj]].merge!(updates[OBJECT_NAMES[proj]])
+          updates.delete(OBJECT_NAMES[proj])
         end
       end
       data['smoke_test'].merge!(updates)
@@ -117,15 +163,15 @@ module Bellows
 
       post_data = { "smoke_test[description]" => description }
 
-      Util.projects.each do |proj|
-        base_name="smoke_test[#{proj}_package_builder_attributes]"
+      Util::ALL_PROJECTS.each do |proj|
+        base_name="smoke_test[#{ATTRIBUTE_NAMES[proj]}]"
         if project == proj then
-          post_data.store("#{base_name}[url]", "https://review.openstack.org/p/openstack/#{project}")
+          post_data.store("#{base_name}[url]", "https://review.openstack.org/#{proj}")
           post_data.store("#{base_name}[branch]", refspec)
           post_data.store("#{base_name}[merge_trunk]", "1")
         else
           post_data.store("#{base_name}[merge_trunk]", "0")
-          post_data.store("#{base_name}[url]", "git://github.com/openstack/#{proj}.git")
+          post_data.store("#{base_name}[url]", "git://github.com/#{proj}.git")
           post_data.store("#{base_name}[branch]", "master")
         end
       end

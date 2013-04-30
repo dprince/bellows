@@ -17,7 +17,7 @@ glance:
   test_suite_ids:
     - 2
 
-nova:
+openstack/nova:
   comment_configs:
     - name: job_unit_tester
       auto_approved: true
