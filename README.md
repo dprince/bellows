@@ -19,17 +19,18 @@ Installation
 	smokestack_username: admin
 	smokestack_password: cloud
 
+        projects:
+        - openstack/nova
+        - stackforge/puppet-nova
+
 	config_template_ids:
 	- 1
+	- 2
 
 	test_suite_ids:
 	- 1
 
 	comment_configs:
-	    - name: job_unit_tester
-	      auto_approved: Yes
-	      description: "Unit"
-
 	    - name: job_puppet_libvirt
 	      config_template_id: 1
 	      auto_approved: No
