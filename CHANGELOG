@@ -1,3 +1,6 @@
+* Mon Aug 12 2013 Dan Prince <dprince@redhat.com> - 2.0.1
+  - Rename quantum to neutron.
+
 * Mon Apr 29 2013 Dan Prince <dprince@redhat.com> - 2.0.0
   - Add support for stackforge puppet modules.
 
