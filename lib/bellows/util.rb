@@ -3,9 +3,9 @@ require 'yaml'
 module Bellows
   module Util
 
-    CORE_PROJECTS = ['openstack/nova', 'openstack/glance', 'openstack/keystone', 'openstack/swift', 'openstack/cinder', 'openstack/quantum']
+    CORE_PROJECTS = ['openstack/nova', 'openstack/glance', 'openstack/keystone', 'openstack/swift', 'openstack/cinder', 'openstack/neutron']
 
-    PUPPET_PROJECTS = ['stackforge/puppet-nova', 'stackforge/puppet-glance', 'stackforge/puppet-keystone', 'stackforge/puppet-swift', 'stackforge/puppet-cinder', 'stackforge/puppet-quantum']
+    PUPPET_PROJECTS = ['stackforge/puppet-nova', 'stackforge/puppet-glance', 'stackforge/puppet-keystone', 'stackforge/puppet-swift', 'stackforge/puppet-cinder', 'stackforge/puppet-neutron']
 
     ALL_PROJECTS = CORE_PROJECTS + PUPPET_PROJECTS
 

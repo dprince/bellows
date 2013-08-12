@@ -34,7 +34,7 @@ Installation
 	    - name: job_puppet_libvirt
 	      config_template_id: 1
 	      auto_approved: No
-	      description: "Fedora 17 Libvirt Quantum w/ OpenvSwitch"
+	      description: "Fedora 17 Libvirt Neutron w/ OpenvSwitch"
 
 	    - name: job_puppet_xen
 	      config_template_id: 2
