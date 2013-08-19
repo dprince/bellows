@@ -167,7 +167,15 @@ module Bellows
                   job_datas.each do |arr|
                       comment_config = arr[0]
                       job_data = arr[1]
-                      message += "\t#{comment_config['description']} #{job_data['status']}:#{job_data['msg']} #{configs['smokestack_url']}/?go=/jobs/#{job_data['id']}\n"
+                      status = 'UNKNOWN'
+                      if job_data['status'] == 'Success' then
+                        status = 'SUCCESS'
+                      elsif ['Failed', 'BuildFail', 'TestFail'].include?(job_data['status']) then
+                        status = 'FAILED'
+                      end
+
+                      message += "- #{comment_config['description']} #{configs['smokestack_url']}/?go=/jobs/#{job_data['id']} : #{status} #{job_data['msg']}\n"
+
                       verify_vote = -1 if job_data['status'] == 'Failed'
                   end
                   puts message if not options[:quiet]
