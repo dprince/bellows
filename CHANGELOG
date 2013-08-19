@@ -1,3 +1,6 @@
+* Mon Aug 19 2013 Dan Prince <dprince@redhat.com> - 2.0.3
+  - Fix issue encoding the '%' character in smokestack POST requests.
+
 * Mon Aug 19 2013 Dan Prince <dprince@redhat.com> - 2.0.2
   - Add support for new SS status types ('BuildFail', 'TestFail', etc.)
   - Add support for automatic test failure approval.

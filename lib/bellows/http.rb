@@ -36,7 +36,7 @@ module URI
       else
         str = k.dup
         str << '='
-        str << v.to_s
+        str << v.to_s.gsub("%", "%25")
       end
     end.join('&')
   end
