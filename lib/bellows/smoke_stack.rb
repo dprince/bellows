@@ -191,15 +191,35 @@ module Bellows
 
     #returns true if jobs all passed (green) or all failed results are approved
     def self.complete?(job_datas)
-      approved = true
+      complete = true
       job_datas.each do |arr|
         job_type = arr[0]
         job_data = arr[1]
-        if job_data.nil? or (job_data['status'] == 'Failed' and (job_data['approved_by'].nil? and not job_type['auto_approved']))
-          approved = false
+        return false if job_data.nil? or (job_data['status'] and ['Pending', 'Running'].include?(job_data['status'])) # waiting on pending jobs or data
+
+        # if bellows doesn't understand the status then we fail
+        if not ['Pending', 'Running', 'Success', 'Failed', 'BuildFail', 'TestFail'].include?(job_data['status']) then
+          return false
         end
+
+        next if job_type['auto_approved'] # global auto_approved
+
+        # special case for build failures
+        if job_data['status'] == 'BuildFail' and not job_type['buildfail_auto_approved'] and not job_data['approved_by'] then
+          complete = false
+        end
+
+        # special case for test failures
+        if job_data['status'] == 'TestFail' and not job_type['testfail_auto_approved'] and not job_data['approved_by'] then
+          complete = false
+        end
+
+        if job_data['status'] == 'Failed' and not job_data['approved_by'] then
+          complete = false
+        end
+
       end
-      approved
+      complete
     end
 
   end

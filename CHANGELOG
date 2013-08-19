@@ -1,3 +1,8 @@
+* Mon Aug 19 2013 Dan Prince <dprince@redhat.com> - 2.0.2
+  - Add support for new SS status types ('BuildFail', 'TestFail', etc.)
+  - Add support for automatic test failure approval.
+  - Add support for automatic build failure approval.
+
 * Mon Aug 12 2013 Dan Prince <dprince@redhat.com> - 2.0.1
   - Rename quantum to neutron.
 

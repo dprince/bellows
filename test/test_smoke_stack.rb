@@ -57,4 +57,138 @@ class SmokeStackTest < Test::Unit::TestCase
 
   end
 
+  def test_complete_with_single_success
+
+    comment_config = {'auto_approved' => false}
+    job_data = {'status' => 'Success', 'approved_by' => nil}
+    job_datas = [[comment_config, job_data]]
+
+    assert_equal true, Bellows::SmokeStack.complete?(job_datas)
+
+  end
+
+  def test_complete_with_single_failed
+
+    comment_config = {'auto_approved' => false}
+    job_data = {'status' => 'Failed', 'approved_by' => nil}
+    job_datas = [[comment_config, job_data]]
+
+    assert_equal false, Bellows::SmokeStack.complete?(job_datas)
+
+  end
+
+  def test_complete_with_single_failed_manually_approved
+
+    comment_config = {'auto_approved' => false}
+    job_data = {'status' => 'Failed', 'approved_by' => 'dprince'}
+    job_datas = [[comment_config, job_data]]
+
+    assert_equal true, Bellows::SmokeStack.complete?(job_datas)
+
+  end
+
+  def test_complete_with_single_failed_auto_approved
+
+    comment_config = {'auto_approved' => true}
+    job_data = {'status' => 'Failed', 'approved_by' => nil}
+    job_datas = [[comment_config, job_data]]
+
+    assert_equal true, Bellows::SmokeStack.complete?(job_datas)
+
+  end
+
+  def test_complete_with_invalid_job_status
+
+    comment_config = {'auto_approved' => true}
+    job_data = {'status' => 'Foo', 'approved_by' => 'dprince'}
+    job_datas = [[comment_config, job_data]]
+
+    assert_equal false, Bellows::SmokeStack.complete?(job_datas)
+
+  end
+
+  def test_complete_with_job_pending
+
+    job_datas = []
+    comment_config = {'auto_approved' => true}
+    job_data = {'status' => 'Success', 'approved_by' => nil}
+    job_datas << [comment_config, job_data]
+    comment_config = {'auto_approved' => true}
+    job_data = {'status' => 'Pending', 'approved_by' => 'dprince'}
+    job_datas << [comment_config, job_data]
+
+    assert_equal false, Bellows::SmokeStack.complete?(job_datas)
+
+  end
+
+  def test_complete_with_job_running
+
+    job_datas = []
+    comment_config = {'auto_approved' => true}
+    job_data = {'status' => 'Success', 'approved_by' => nil}
+    job_datas << [comment_config, job_data]
+    comment_config = {'auto_approved' => true}
+    job_data = {'status' => 'Pending', 'approved_by' => 'dprince'}
+    job_datas << [comment_config, job_data]
+
+    assert_equal false, Bellows::SmokeStack.complete?(job_datas)
+
+  end
+
+  def test_complete_with_build_fail_auto_approved
+
+    job_datas = []
+    comment_config = {'buildfail_auto_approved' => true}
+    job_data = {'status' => 'BuildFail', 'approved_by' => nil}
+    job_datas << [comment_config, job_data]
+    comment_config = {}
+    job_data = {'status' => 'Success', 'approved_by' => nil}
+    job_datas << [comment_config, job_data]
+
+    assert_equal true, Bellows::SmokeStack.complete?(job_datas)
+
+  end
+
+  def test_complete_with_build_fail_manually_approved
+
+    job_datas = []
+    comment_config = {'buildfail_auto_approved' => false}
+    job_data = {'status' => 'BuildFail', 'approved_by' => 'dprince'}
+    job_datas << [comment_config, job_data]
+    comment_config = {}
+    job_data = {'status' => 'Success', 'approved_by' => nil}
+    job_datas << [comment_config, job_data]
+
+    assert_equal true, Bellows::SmokeStack.complete?(job_datas)
+
+  end
+
+  def test_complete_with_build_fail_auto_approved
+
+    job_datas = []
+    comment_config = {'testfail_auto_approved' => true}
+    job_data = {'status' => 'TestFail', 'approved_by' => nil}
+    job_datas << [comment_config, job_data]
+    comment_config = {}
+    job_data = {'status' => 'Success', 'approved_by' => nil}
+    job_datas << [comment_config, job_data]
+
+    assert_equal true, Bellows::SmokeStack.complete?(job_datas)
+
+  end
+
+  def test_complete_with_build_fail_manually_approved
+
+    job_datas = []
+    comment_config = {'testfail_auto_approved' => false}
+    job_data = {'status' => 'TestFail', 'approved_by' => 'dprince'}
+    job_datas << [comment_config, job_data]
+    comment_config = {}
+    job_data = {'status' => 'Success', 'approved_by' => nil}
+    job_datas << [comment_config, job_data]
+
+    assert_equal true, Bellows::SmokeStack.complete?(job_datas)
+
+  end
+
 end
