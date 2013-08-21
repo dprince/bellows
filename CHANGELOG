@@ -1,3 +1,6 @@
+* Wed Aug 21 2013 Dan Prince <dprince@redhat.com> - 2.0.4
+  - Fix issue where gerrit -1's were calculated incorrectly.
+
 * Mon Aug 19 2013 Dan Prince <dprince@redhat.com> - 2.0.3
   - Fix issue encoding the '%' character in smokestack POST requests.
   - Comment a 'Failed' result for build and test failures.

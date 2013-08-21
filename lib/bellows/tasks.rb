@@ -172,11 +172,11 @@ module Bellows
                         status = 'SUCCESS'
                       elsif ['Failed', 'BuildFail', 'TestFail'].include?(job_data['status']) then
                         status = 'FAILED'
+                        verify_vote = -1
                       end
 
                       message += "- #{comment_config['description']} #{configs['smokestack_url']}/?go=/jobs/#{job_data['id']} : #{status} #{job_data['msg']}\n"
 
-                      verify_vote = -1 if job_data['status'] == 'Failed'
                   end
                   puts message if not options[:quiet]
                   out = Bellows::Gerrit.comment(review['currentPatchSet']['revision'], message, verify_vote) if not test
