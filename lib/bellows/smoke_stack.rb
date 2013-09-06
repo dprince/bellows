@@ -12,12 +12,16 @@ module Bellows
       'openstack/swift' => 'swift_revision',
       'openstack/cinder' => 'cinder_revision',
       'openstack/neutron' => 'neutron_revision',
+      'openstack/ceilometer' => 'ceilometer_revision',
+      'openstack/heat' => 'heat_revision',
       'stackforge/puppet-nova' => 'nova_conf_module_revision',
       'stackforge/puppet-glance' => 'glance_conf_module_revision',
       'stackforge/puppet-keystone' => 'keystone_conf_module_revision',
       'stackforge/puppet-swift' => 'swift_conf_module_revision',
       'stackforge/puppet-cinder' => 'cinder_conf_module_revision',
       'stackforge/puppet-neutron' => 'neutron_conf_module_revision',
+      'stackforge/puppet-ceilometer' => 'ceilometer_conf_module_revision',
+      'stackforge/puppet-heat' => 'heat_conf_module_revision',
     }
 
     OBJECT_NAMES = {
@@ -27,12 +31,16 @@ module Bellows
       'openstack/swift' => 'swift_package_builder',
       'openstack/cinder' => 'cinder_package_builder',
       'openstack/neutron' => 'neutron_package_builder',
+      'openstack/ceilometer' => 'ceilometer_package_builder',
+      'openstack/heat' => 'heat_package_builder',
       'stackforge/puppet-nova' => 'nova_config_module',
       'stackforge/puppet-glance' => 'glance_config_module',
       'stackforge/puppet-keystone' => 'keystone_config_module',
       'stackforge/puppet-swift' => 'swift_config_module',
       'stackforge/puppet-cinder' => 'cinder_config_module',
       'stackforge/puppet-neutron' => 'neutron_config_module',
+      'stackforge/puppet-ceilometer' => 'ceilometer_config_module',
+      'stackforge/puppet-heat' => 'heat_config_module',
     }
 
     ATTRIBUTE_NAMES = {
@@ -42,12 +50,16 @@ module Bellows
       'openstack/swift' => 'swift_package_builder_attributes',
       'openstack/cinder' => 'cinder_package_builder_attributes',
       'openstack/neutron' => 'neutron_package_builder_attributes',
+      'openstack/ceilometer' => 'ceilometer_package_builder_attributes',
+      'openstack/heat' => 'heat_package_builder_attributes',
       'stackforge/puppet-nova' => 'nova_config_module_attributes',
       'stackforge/puppet-glance' => 'glance_config_module_attributes',
       'stackforge/puppet-keystone' => 'keystone_config_module_attributes',
       'stackforge/puppet-swift' => 'swift_config_module_attributes',
       'stackforge/puppet-cinder' => 'cinder_config_module_attributes',
       'stackforge/puppet-neutron' => 'neutron_config_module_attributes',
+      'stackforge/puppet-ceilometer' => 'ceilometer_config_module_attributes',
+      'stackforge/puppet-heat' => 'heat_config_module_attributes',
     }
 
     def self.jobs()

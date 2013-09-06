@@ -1,3 +1,6 @@
+* Thu Sep 5 2013 Dan Prince <dprince@redhat.com> - 2.0.5
+  - Add support for Ceilometer and Heat.
+
 * Wed Aug 21 2013 Dan Prince <dprince@redhat.com> - 2.0.4
   - Fix issue where gerrit -1's were calculated incorrectly.
 
